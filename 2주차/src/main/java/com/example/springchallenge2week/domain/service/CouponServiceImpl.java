@@ -45,15 +45,15 @@ public class CouponServiceImpl implements CouponService {
 
     // 쿠폰 리스트 + 페이징 + 검색
     @Override
-    public Page<Coupon> getCouponsPage(Pageable pageable, String name, String code, LocalDateTime startDate, LocalDateTime endDate) {
+    public Page<Coupon> getCouponsPage(Pageable pageable, String name, String code, LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
-        return couponRepository.findCouponWithParam(pageable, name, code, startDate, endDate);
+        return couponRepository.findCouponWithParam(pageable, name, code, startDateTime, endDateTime);
     }
 
     // 쿠폰 리스트 + DTO(페이징) + DTO(검색)
     @Override
-    public Page<Coupon> getCouponsPageWithDto(Pageable pageable, String name, String code, LocalDate startDate, LocalDate endDate) {
+    public Page<Coupon> getCouponsPageWithDto(Pageable pageable, String name, String code, LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
-        return couponRepository.findCouponWithDto(pageable, name, code, startDate, endDate);
+        return couponRepository.findCouponWithDto(pageable, name, code, startDateTime, endDateTime);
     }
 }

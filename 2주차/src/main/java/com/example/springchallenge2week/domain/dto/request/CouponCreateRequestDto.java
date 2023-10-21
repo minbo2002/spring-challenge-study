@@ -5,6 +5,8 @@ import com.example.springchallenge2week.domain.entity.CouponStatus;
 import com.example.springchallenge2week.domain.entity.CouponType;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Getter
@@ -13,7 +15,10 @@ import java.time.LocalDate;
 @ToString
 public class CouponCreateRequestDto {
 
+    @NotBlank
+    @Pattern(regexp = "^[가-힣]*$", message = "한글만 입력 가능합니다.")
     private String name;
+
     private String code;
 
     private CouponType type;

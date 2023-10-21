@@ -13,20 +13,20 @@ import java.time.LocalDateTime;
 public interface CouponRepository extends JpaRepository<Coupon, Long> {
 
     // 쿠폰 리스트 + 페이징 + 검색
-    @Query("select c from Coupon c where c.name like %:name% or c.code like %:code% or c.createdAt BETWEEN :startDate AND :endDate")
+    @Query("select c from Coupon c where c.name like %:name% and c.code like %:code% and c.createdAt BETWEEN :startDate AND :endDate")
     Page<Coupon> findCouponWithParam(
             Pageable pageable,
             @Param("name") String name,
             @Param("code") String code,
-            @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate);
+            @Param("startDate") LocalDateTime startDateTime,
+            @Param("endDate") LocalDateTime endDateTime);
 
     // 쿠폰 리스트 + DTO(페이징) + DTO(검색)
-    @Query("select c from Coupon c where c.name like %:name% or c.code like %:code% or c.createdAt BETWEEN :startDate AND :endDate")
+    @Query("select c from Coupon c where c.name like %:name% and c.code like %:code% and c.createdAt BETWEEN :startDate AND :endDate")
     Page<Coupon> findCouponWithDto(
             Pageable pageable,
             @Param("name") String name,
             @Param("code") String code,
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate);
+            @Param("startDate") LocalDateTime startDateTime,
+            @Param("endDate") LocalDateTime endDateTime);
 }

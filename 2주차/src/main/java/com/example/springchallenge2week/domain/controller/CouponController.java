@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -56,22 +57,23 @@ public class CouponController {
                 @RequestParam(value = "startDate", required = false) String strStartDate,
                 @RequestParam(value = "endDate", required = false) String strEndDate) {
 
-        log.info("name: {}, code: {}, startDate: {}, endDate: {}", name, code, strStartDate, strEndDate);
+        log.info("name: {}, code: {}, strStartDate: {}, strEndDate: {}", name, code, strStartDate, strEndDate);
 
-        LocalDateTime startDate = null;
-        LocalDateTime endDate = null;
+        LocalDateTime startDateTime = LocalDateTime.of(1900, 1, 1, 0, 0, 0);
+        LocalDateTime endDateTime = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
 
         if (strStartDate != null && !strStartDate.isEmpty()) {
-            // "yyyy-MM-dd" 형식의 패턴으로 변경
-            startDate = LocalDate.parse(strStartDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
+            // "yyyy-MM-dd'T'HH:mm:ss" 패턴으로 변경
+            startDateTime = LocalDate.parse(strStartDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();  // 하루의 시작시간
         }
         if (strEndDate != null && !strEndDate.isEmpty()) {
-            // "yyyy-MM-dd" 형식의 패턴으로 변경
-            endDate = LocalDate.parse(strEndDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atTime(LocalTime.MAX);
+            // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS" 패턴으로 변경
+            endDateTime = LocalDate.parse(strEndDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atTime(LocalTime.MAX); // 하루의 마지막시간
         }
 
-        log.info("name: {}, code: {}, startDate: {}, endDate: {}", name, code, startDate, endDate);
-        Page<Coupon> coupons = couponService.getCouponsPage(pageable, name, code, startDate, endDate);
+        log.info("name: {}, code: {}, startDateTime: {}, endDateTime: {}", name, code, startDateTime, endDateTime);
+
+        Page<Coupon> coupons = couponService.getCouponsPage(pageable, name, code, startDateTime, endDateTime);
 
         return ResponseEntity.ok(coupons);
     }
@@ -86,7 +88,18 @@ public class CouponController {
         LocalDate startDate = requestDto.getStartDate();
         LocalDate endDate = requestDto.getEndDate();
 
-        Page<Coupon> coupons = couponService.getCouponsPageWithDto(pageable, name, code, startDate, endDate);
+        LocalDateTime startDateTime = LocalDateTime.of(1900, 1, 1, 0, 0, 0);
+        LocalDateTime endDateTime = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
+        if (startDate != null) {
+            startDateTime = startDate.atStartOfDay();  // 하루의 시작시간
+        }
+        if (endDate != null) {
+            endDateTime = endDate.atTime(LocalTime.MAX);;  // 하루의 마지막시간
+        }
+
+        log.info("name: {}, code: {}, startDateTime: {}, endDateTime: {}", name, code, startDateTime, endDateTime);
+
+        Page<Coupon> coupons = couponService.getCouponsPageWithDto(pageable, name, code, startDateTime, endDateTime);
 
         return ResponseEntity.ok(coupons);
     }
