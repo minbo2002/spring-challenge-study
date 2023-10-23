@@ -1,6 +1,6 @@
 package com.example.springchallenge2week.domain.dto.request;
 
-import com.example.springchallenge2week.common.PageRequestDto;
+import com.example.springchallenge2week.common.page.PageRequestDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

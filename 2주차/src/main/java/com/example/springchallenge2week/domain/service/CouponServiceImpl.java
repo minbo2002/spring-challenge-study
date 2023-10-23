@@ -1,5 +1,7 @@
 package com.example.springchallenge2week.domain.service;
 
+import com.example.springchallenge2week.common.exception.CustomApiException;
+import com.example.springchallenge2week.common.exception.ResponseCode;
 import com.example.springchallenge2week.domain.dto.request.CouponCreateRequestDto;
 import com.example.springchallenge2week.domain.dto.response.CouponResponse;
 import com.example.springchallenge2week.domain.entity.Coupon;
@@ -16,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.springchallenge2week.common.exception.ResponseCode.INVALID_REQUEST;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -28,6 +32,10 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     @Override
     public CouponResponse createCoupon(CouponCreateRequestDto request) {
+
+        if(request.getName().matches("^[가-힣]*$")) {
+            throw new CustomApiException("쿠폰 이름은 한글만 입력 가능합니다.", ResponseCode.INVALID_REQUEST);
+        }
 
         Coupon saveCoupon = couponRepository.save(request.toEntity());
 

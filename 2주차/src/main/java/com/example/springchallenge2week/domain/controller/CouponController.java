@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -32,7 +33,7 @@ public class CouponController {
 
     // 쿠폰 생성
     @PostMapping("/coupon")
-    public ResponseEntity<CouponResponse> createCoupon(@RequestBody CouponCreateRequestDto request) {
+    public ResponseEntity<CouponResponse> createCoupon(@Valid @RequestBody CouponCreateRequestDto request) {
 
         CouponResponse coupon = couponService.createCoupon(request);
 

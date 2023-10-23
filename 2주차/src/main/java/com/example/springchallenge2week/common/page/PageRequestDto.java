@@ -1,4 +1,4 @@
-package com.example.springchallenge2week.common;
+package com.example.springchallenge2week.common.page;
 
 import lombok.Getter;
 import lombok.Setter;
