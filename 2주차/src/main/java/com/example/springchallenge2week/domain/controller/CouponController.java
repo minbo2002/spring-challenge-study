@@ -76,4 +76,11 @@ public class CouponController {
     }
 
     // 쿠폰 리스트 + QueryDSL(페이징+검색)
+    @GetMapping("/coupon/querydsl")
+    public ResponseEntity<Page<CouponResponse>> getCouponsPageWithQueryDsl(CouponSearchRequestDto requestDto){
+
+        Page<CouponResponse> coupons = couponService.getCouponsPageWithQueryDsl(requestDto);
+
+        return ResponseEntity.ok(coupons);
+    }
 }
