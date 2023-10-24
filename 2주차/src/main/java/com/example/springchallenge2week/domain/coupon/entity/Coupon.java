@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Entity
@@ -17,6 +18,7 @@ public class Coupon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "coupon_id")
     private Long id;
 
     @Column(nullable = false)
@@ -38,6 +40,9 @@ public class Coupon extends BaseTimeEntity {
     private LocalDate startDate;
     @Column(name = "end_date")
     private LocalDate endDate;
+
+    @OneToMany(mappedBy = "coupon")
+    private List<CouponHistory> couponHistoryies;
 
     @Builder
     public Coupon(Long id, String name, String code, CouponType type, CouponStatus status, LocalDate startDate, LocalDate endDate) {
