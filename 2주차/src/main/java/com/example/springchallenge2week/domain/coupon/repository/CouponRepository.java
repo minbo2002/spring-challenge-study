@@ -1,6 +1,6 @@
-package com.example.springchallenge2week.domain.repository;
+package com.example.springchallenge2week.domain.coupon.repository;
 
-import com.example.springchallenge2week.domain.entity.Coupon;
+import com.example.springchallenge2week.domain.coupon.entity.Coupon;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

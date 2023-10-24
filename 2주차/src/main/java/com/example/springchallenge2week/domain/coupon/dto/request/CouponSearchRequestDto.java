@@ -1,4 +1,4 @@
-package com.example.springchallenge2week.domain.dto.request;
+package com.example.springchallenge2week.domain.coupon.dto.request;
 
 import com.example.springchallenge2week.common.page.PageRequestDto;
 import lombok.Getter;

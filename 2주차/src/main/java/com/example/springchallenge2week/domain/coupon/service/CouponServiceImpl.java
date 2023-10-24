@@ -1,11 +1,10 @@
-package com.example.springchallenge2week.domain.service;
+package com.example.springchallenge2week.domain.coupon.service;
 
-import com.example.springchallenge2week.domain.dto.request.CouponCreateRequestDto;
-import com.example.springchallenge2week.domain.dto.request.CouponSearchRequestDto;
-import com.example.springchallenge2week.domain.dto.response.CouponResponse;
-import com.example.springchallenge2week.domain.entity.Coupon;
-import com.example.springchallenge2week.domain.repository.CouponRepository;
-import com.example.springchallenge2week.domain.repository.CouponRepositoryCustom;
+import com.example.springchallenge2week.domain.coupon.dto.request.CouponCreateRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.request.CouponSearchRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.response.CouponResponse;
+import com.example.springchallenge2week.domain.coupon.entity.Coupon;
+import com.example.springchallenge2week.domain.coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

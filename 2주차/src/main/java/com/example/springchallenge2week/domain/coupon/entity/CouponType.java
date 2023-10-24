@@ -1,4 +1,4 @@
-package com.example.springchallenge2week.domain.entity;
+package com.example.springchallenge2week.domain.coupon.entity;
 
 import lombok.RequiredArgsConstructor;
 

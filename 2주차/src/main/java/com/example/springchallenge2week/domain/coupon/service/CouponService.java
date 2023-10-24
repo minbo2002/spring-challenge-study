@@ -1,14 +1,12 @@
-package com.example.springchallenge2week.domain.service;
+package com.example.springchallenge2week.domain.coupon.service;
 
-import com.example.springchallenge2week.domain.dto.request.CouponCreateRequestDto;
-import com.example.springchallenge2week.domain.dto.request.CouponSearchRequestDto;
-import com.example.springchallenge2week.domain.dto.response.CouponResponse;
-import com.example.springchallenge2week.domain.entity.Coupon;
+import com.example.springchallenge2week.domain.coupon.dto.request.CouponCreateRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.request.CouponSearchRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.response.CouponResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CouponService {

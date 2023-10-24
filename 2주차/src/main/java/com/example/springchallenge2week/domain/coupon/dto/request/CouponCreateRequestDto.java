@@ -1,8 +1,8 @@
-package com.example.springchallenge2week.domain.dto.request;
+package com.example.springchallenge2week.domain.coupon.dto.request;
 
-import com.example.springchallenge2week.domain.entity.Coupon;
-import com.example.springchallenge2week.domain.entity.CouponStatus;
-import com.example.springchallenge2week.domain.entity.CouponType;
+import com.example.springchallenge2week.domain.coupon.entity.Coupon;
+import com.example.springchallenge2week.domain.coupon.entity.CouponStatus;
+import com.example.springchallenge2week.domain.coupon.entity.CouponType;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;

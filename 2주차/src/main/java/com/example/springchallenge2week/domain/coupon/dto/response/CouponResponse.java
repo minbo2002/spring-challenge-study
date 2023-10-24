@@ -1,8 +1,8 @@
-package com.example.springchallenge2week.domain.dto.response;
+package com.example.springchallenge2week.domain.coupon.dto.response;
 
-import com.example.springchallenge2week.domain.entity.Coupon;
-import com.example.springchallenge2week.domain.entity.CouponStatus;
-import com.example.springchallenge2week.domain.entity.CouponType;
+import com.example.springchallenge2week.domain.coupon.entity.Coupon;
+import com.example.springchallenge2week.domain.coupon.entity.CouponStatus;
+import com.example.springchallenge2week.domain.coupon.entity.CouponType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
