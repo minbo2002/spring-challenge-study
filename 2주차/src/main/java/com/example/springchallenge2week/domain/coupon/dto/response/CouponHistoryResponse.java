@@ -1,13 +1,12 @@
 package com.example.springchallenge2week.domain.coupon.dto.response;
 
-import com.example.springchallenge2week.domain.coupon.entity.Coupon;
 import com.example.springchallenge2week.domain.coupon.entity.CouponHistory;
 import com.example.springchallenge2week.domain.coupon.entity.CouponHistoryStatus;
 import com.example.springchallenge2week.domain.coupon.entity.CouponHistoryType;
-import com.example.springchallenge2week.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -45,27 +44,4 @@ public class CouponHistoryResponse {
                 .couponId(couponHistory.getCoupon().getId())
                 .build();
     }
-
-    //    @Builder
-//    public CouponHistoryResponse(Long id, CouponHistoryStatus status, CouponHistoryType type, LocalDateTime usedAt, LocalDateTime issuedAt, User user, Coupon coupon) {
-//        this.id = id;
-//        this.status = status;
-//        this.type = type;
-//        this.usedAt = usedAt;
-//        this.issuedAt = issuedAt;
-//        this.user = user;
-//        this.coupon = coupon;
-//    }
-//
-//    static public CouponHistoryResponse toDto(CouponHistory couponHistory) {
-//        return CouponHistoryResponse.builder()
-//                .id(couponHistory.getId())
-//                .status(couponHistory.getStatus())
-//                .type(couponHistory.getType())
-//                .usedAt(couponHistory.getUsedAt())
-//                .issuedAt(couponHistory.getIssuedAt())
-//                .user(couponHistory.getUser())
-//                .coupon(couponHistory.getCoupon())
-//                .build();
-//    }
 }

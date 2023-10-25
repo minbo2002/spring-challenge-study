@@ -1,7 +1,6 @@
 package com.example.springchallenge2week.domain.coupon.entity;
 
 import com.example.springchallenge2week.domain.user.entity.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

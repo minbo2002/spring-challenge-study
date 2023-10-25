@@ -1,7 +1,6 @@
 package com.example.springchallenge2week.domain.coupon.entity;
 
 import com.example.springchallenge2week.common.BaseTimeEntity;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,15 +1,11 @@
 package com.example.springchallenge2week.domain.coupon.controller;
 
-import com.example.springchallenge2week.common.exception.CustomApiException;
-import com.example.springchallenge2week.common.exception.ResponseCode;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponCreateRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponDownloadRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponSearchRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponHistoryResponse;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponResponse;
-import com.example.springchallenge2week.domain.coupon.entity.CouponType;
 import com.example.springchallenge2week.domain.coupon.service.CouponService;
-import com.example.springchallenge2week.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,7 +27,6 @@ import java.util.List;
 public class CouponController {
 
     private final CouponService couponService;
-//    private final UserService userService;
 
     // 쿠폰 생성
     @PostMapping("/coupon")
