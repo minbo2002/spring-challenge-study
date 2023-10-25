@@ -1,9 +1,15 @@
 package com.example.springchallenge2week.domain.coupon.controller;
 
+import com.example.springchallenge2week.common.exception.CustomApiException;
+import com.example.springchallenge2week.common.exception.ResponseCode;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponCreateRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.request.CouponDownloadRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponSearchRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.response.CouponHistoryResponse;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponResponse;
+import com.example.springchallenge2week.domain.coupon.entity.CouponType;
 import com.example.springchallenge2week.domain.coupon.service.CouponService;
+import com.example.springchallenge2week.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,6 +31,7 @@ import java.util.List;
 public class CouponController {
 
     private final CouponService couponService;
+//    private final UserService userService;
 
     // 쿠폰 생성
     @PostMapping("/coupon")
@@ -33,6 +40,29 @@ public class CouponController {
         CouponResponse coupon = couponService.createCoupon(request);
 
         return new ResponseEntity<>(coupon, HttpStatus.CREATED);
+    }
+
+    // 쿠폰 발급
+    @PostMapping("/coupon/user/{userId}/download")
+    public ResponseEntity<CouponHistoryResponse> downloadCoupon(@Valid @RequestBody CouponDownloadRequestDto request,
+                                                                @PathVariable Long userId) {
+
+        log.info("request: {}", request);
+        log.info("userId: {}", userId);
+
+        CouponHistoryResponse couponHistory = couponService.createCouponHistory(userId, request.getCouponCode());
+
+        return ResponseEntity.ok(couponHistory);
+    }
+
+    // 단일 쿠폰확인
+    @GetMapping("/coupon/{couponCode}")
+    public ResponseEntity<CouponResponse> getCoupon(@PathVariable String couponCode) {
+
+        log.info("couponCode: {}", couponCode);
+        CouponResponse coupon = couponService.getCoupon(couponCode);
+
+        return ResponseEntity.ok(coupon);
     }
 
     // 쿠폰 리스트

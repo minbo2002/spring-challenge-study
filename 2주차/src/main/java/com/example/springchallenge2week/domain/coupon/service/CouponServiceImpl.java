@@ -1,10 +1,16 @@
 package com.example.springchallenge2week.domain.coupon.service;
 
+import com.example.springchallenge2week.common.exception.CustomApiException;
+import com.example.springchallenge2week.common.exception.ResponseCode;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponCreateRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponSearchRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.response.CouponHistoryResponse;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponResponse;
-import com.example.springchallenge2week.domain.coupon.entity.Coupon;
+import com.example.springchallenge2week.domain.coupon.entity.*;
+import com.example.springchallenge2week.domain.coupon.repository.CouponHistoryRepository;
 import com.example.springchallenge2week.domain.coupon.repository.CouponRepository;
+import com.example.springchallenge2week.domain.user.entity.User;
+import com.example.springchallenge2week.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,7 +31,9 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class CouponServiceImpl implements CouponService {
 
+    private final CouponHistoryRepository couponHistoryRepository;
     private final CouponRepository couponRepository;
+    private final UserRepository userRepository;
 
     // 쿠폰 생성
     @Transactional
@@ -35,6 +43,47 @@ public class CouponServiceImpl implements CouponService {
         Coupon saveCoupon = couponRepository.save(request.toEntity());
 
         return CouponResponse.toDto(saveCoupon);
+    }
+
+    // 쿠폰 발급 (쿠폰 히스토리 생성)
+    @Transactional
+    @Override
+    public CouponHistoryResponse createCouponHistory(Long userId, String couponCode) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomApiException(ResponseCode.NO_TARGET));
+        log.info("ServiceImpl user: {}", user);
+
+        Coupon coupon = couponRepository.findByCouponCode(couponCode);
+        log.info("ServiceImpl coupon: {}", coupon);
+
+        if(coupon == null) {
+            throw new CustomApiException(ResponseCode.NO_TARGET_COUPON);
+        }else if(coupon.getType() != CouponType.DISCOUNT){
+            throw new CustomApiException(ResponseCode.INVALID_DISCOUNT);
+        }
+
+        CouponHistory couponHistory = CouponHistory.builder()
+                .status(CouponHistoryStatus.UNUSED)
+                .type(CouponHistoryType.NO)
+                .usedAt(null)
+                .issuedAt(LocalDateTime.now())
+                .user(user)
+                .coupon(coupon)
+                .build();
+
+        CouponHistory saveCouponHistory = couponHistoryRepository.save(couponHistory);
+
+        return CouponHistoryResponse.toDto(saveCouponHistory);
+    }
+
+    // 단일 쿠폰 확인
+    @Override
+    public CouponResponse getCoupon(String couponCode) {
+
+        Coupon coupon = couponRepository.findByCouponCode(couponCode);
+
+        return CouponResponse.toDto(coupon);
     }
 
     // 쿠폰 리스트
@@ -92,7 +141,27 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public Page<CouponResponse> getCouponsPageWithQueryDsl(CouponSearchRequestDto requestDto) {
 
-        return couponRepository.findCouponWithQueryDsl(requestDto)
-                .map(CouponResponse::toDto);
+        Page<Coupon> couponPage = couponRepository.findCouponWithQueryDsl(requestDto);
+
+        // Coupon 엔티티를 CouponResponse로 변환
+        Page<CouponResponse> couponResponsePage = couponPage
+                .map(coupon -> {String statusDescription = getStatusDescription(coupon);
+
+            return CouponResponse.toDto(coupon, statusDescription);
+        });
+
+        return couponResponsePage;
+    }
+
+    private String getStatusDescription(Coupon coupon) {
+        List<CouponHistory> histories = coupon.getCouponHistoryies();
+
+        for (CouponHistory history : histories) {
+            if (history.getStatus() == CouponHistoryStatus.EXPIRED) {
+                return "만료";
+            }
+        }
+
+        return "활성화";
     }
 }

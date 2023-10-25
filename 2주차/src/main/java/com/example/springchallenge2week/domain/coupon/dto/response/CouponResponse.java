@@ -22,6 +22,8 @@ public class CouponResponse {
     private final CouponType type;
     private final CouponStatus status;
 
+    private final String statusDescription;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private final LocalDate startDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -39,6 +41,20 @@ public class CouponResponse {
                 .code(coupon.getCode())
                 .type(coupon.getType())
                 .status(coupon.getStatus())
+                .startDate(coupon.getStartDate())
+                .endDate(coupon.getEndDate())
+                .createdAt(coupon.getCreatedAt())
+                .modifiedAt(coupon.getModifiedAt())
+                .build();
+    }
+
+    public static CouponResponse toDto(Coupon coupon, String statusDescription) {
+        return CouponResponse.builder()
+                .id(coupon.getId())
+                .name(coupon.getName())
+                .code(coupon.getCode())
+                .type(coupon.getType())
+                .statusDescription(statusDescription)
                 .startDate(coupon.getStartDate())
                 .endDate(coupon.getEndDate())
                 .createdAt(coupon.getCreatedAt())

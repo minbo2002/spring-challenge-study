@@ -29,4 +29,8 @@ public interface CouponRepository extends JpaRepository<Coupon, Long>,
             @Param("code") String code,
             @Param("startDate") LocalDateTime startDateTime,
             @Param("endDate") LocalDateTime endDateTime);
+
+    // 단일 쿠폰확인
+    @Query("select c from Coupon c where c.code = :couponCode")
+    Coupon findByCouponCode(@Param("couponCode") String couponCode);
 }
