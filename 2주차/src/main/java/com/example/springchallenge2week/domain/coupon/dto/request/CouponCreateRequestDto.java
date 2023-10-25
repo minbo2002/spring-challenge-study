@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class CouponCreateRequestDto {
 
     @NotBlank
-    @Pattern(regexp = "^[가-힣]*$", message = "한글만 입력 가능합니다.")
+    @Pattern(regexp = "^[가-힣0-9]+$", message = "한글과 숫자만 입력 가능합니다.")
     private String name;
 
     private String code;

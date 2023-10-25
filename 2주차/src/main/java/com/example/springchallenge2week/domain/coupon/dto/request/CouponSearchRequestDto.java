@@ -1,6 +1,7 @@
 package com.example.springchallenge2week.domain.coupon.dto.request;
 
 import com.example.springchallenge2week.common.page.PageRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,4 +25,12 @@ public class CouponSearchRequestDto extends PageRequestDto {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
+    @Builder
+    public CouponSearchRequestDto(String name, String code, LocalDate startDate, LocalDate endDate) {
+        this.name = name;
+        this.code = code;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }
