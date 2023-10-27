@@ -38,6 +38,7 @@ public class CouponServiceImpl implements CouponService {
 
     // 유효날짜 지난 쿠폰히스토리 상태 변경
     @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
     public void run() {
 
         List<Coupon> couponList = couponRepository.findByEndAtBefore(LocalDate.now());
@@ -48,8 +49,12 @@ public class CouponServiceImpl implements CouponService {
                 .collect(Collectors.toList());
 
         for(Long couponId : couponIds) {
-            CouponHistory couponHistory = couponHistoryRepository.findByCouponId(couponId);
-            couponHistory.updateStatus(couponHistory.getStatus());
+
+            List<CouponHistory> couponHistories = couponHistoryRepository.findByCouponId(couponId);
+
+            for(CouponHistory couponHistory : couponHistories) {
+                couponHistory.updateStatus(couponHistory.getStatus());
+            }
         }
     }
 
