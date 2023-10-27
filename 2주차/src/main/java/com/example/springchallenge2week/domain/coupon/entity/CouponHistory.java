@@ -52,4 +52,8 @@ public class CouponHistory {
         this.user = user;
         this.coupon = coupon;
     }
+
+    public void updateStatus(CouponHistoryStatus status) {
+        this.status = CouponHistoryStatus.EXPIRED;
+    }
 }

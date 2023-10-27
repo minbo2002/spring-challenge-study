@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface CouponRepository extends JpaRepository<Coupon, Long>,
                                           CouponRepositoryCustom{
@@ -30,7 +32,11 @@ public interface CouponRepository extends JpaRepository<Coupon, Long>,
             @Param("startDate") LocalDateTime startDateTime,
             @Param("endDate") LocalDateTime endDateTime);
 
-    // 단일 쿠폰확인
+    // 단일 쿠폰확인 fetch join
     @Query("select c from Coupon c where c.code = :couponCode")
     Coupon findByCouponCode(@Param("couponCode") String couponCode);
+
+    // 유효기간이 지난 쿠폰 조회
+    @Query("select c from Coupon c where c.endDate < :now")
+    List<Coupon> findByEndAtBefore(@Param("now") LocalDate now);
 }

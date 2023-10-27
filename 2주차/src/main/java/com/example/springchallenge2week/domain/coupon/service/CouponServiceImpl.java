@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,23 @@ public class CouponServiceImpl implements CouponService {
     private final CouponHistoryRepository couponHistoryRepository;
     private final CouponRepository couponRepository;
     private final UserRepository userRepository;
+
+    // 유효날짜 지난 쿠폰히스토리 상태 변경
+    @Scheduled(cron = "0 0 0 * * *")
+    public void run() {
+
+        List<Coupon> couponList = couponRepository.findByEndAtBefore(LocalDate.now());
+
+        // 조회한 쿠폰들의 PK를 추출
+        List<Long> couponIds = couponList.stream()
+                .map(Coupon::getId)
+                .collect(Collectors.toList());
+
+        for(Long couponId : couponIds) {
+            CouponHistory couponHistory = couponHistoryRepository.findByCouponId(couponId);
+            couponHistory.updateStatus(couponHistory.getStatus());
+        }
+    }
 
     // 쿠폰 생성
     @Transactional
@@ -61,6 +79,10 @@ public class CouponServiceImpl implements CouponService {
             throw new CustomApiException(ResponseCode.NO_TARGET_COUPON);
         }else if(coupon.getType() != CouponType.DISCOUNT){
             throw new CustomApiException(ResponseCode.INVALID_DISCOUNT);
+        }else if(coupon.getStatus() == CouponStatus.PRIVATE) {
+            throw new CustomApiException(ResponseCode.PRIVATE_COUPON);
+        }else if(couponHistoryRepository.findByUserAndCoupon(user.getId(), coupon.getId()) != null) {
+            throw new CustomApiException(ResponseCode.ALREADY_ISSUED_COUPON);
         }
 
         CouponHistory couponHistory = CouponHistory.builder()
