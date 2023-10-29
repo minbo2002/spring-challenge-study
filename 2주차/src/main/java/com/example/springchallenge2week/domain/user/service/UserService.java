@@ -1,8 +1,11 @@
 package com.example.springchallenge2week.domain.user.service;
 
-import com.example.springchallenge2week.domain.user.dto.response.UserResponse;
+import com.example.springchallenge2week.domain.user.dto.request.SignUpDto;
+import com.example.springchallenge2week.domain.user.dto.response.UserInfoDto;
 
 public interface UserService {
 
-    UserResponse getUser(Long userId);
+    void registerUser(SignUpDto signUpDto);
+
+    UserInfoDto getUser(Long userId);
 }
