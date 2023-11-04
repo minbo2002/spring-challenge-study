@@ -50,14 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/user/reissuance").permitAll()
-//                .antMatchers("/api/user/**", "/test/**", "/api/tags/**").permitAll()
-//                .antMatchers("/api/v1/user/**").hasAnyAuthority("MERCHANT", "ADMIN")
-                .antMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
-                .antMatchers(("api/products/**")).hasAnyAuthority("ADMIN")
-//                .anyRequest().permitAll()
-        // 401, 403 exception handling 처리 -> authenticationEntryPoint, jwtAccessDeniedHandler로 대체
+                .antMatchers(HttpMethod.POST, "/api/user/signup", "/api/user/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user/logout", "/api/user/reissuance").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/user/info").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/api/coupon").hasAnyAuthority("ADMIN")
+
+    // 401, 403 exception handling 처리 -> authenticationEntryPoint, jwtAccessDeniedHandler로 대체
 //                .and()
 //                        .exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> {
 //                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
