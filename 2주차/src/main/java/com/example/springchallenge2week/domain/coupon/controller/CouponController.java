@@ -1,8 +1,10 @@
 package com.example.springchallenge2week.domain.coupon.controller;
 
+import com.example.springchallenge2week.common.security.dto.PrincipalDetails;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponCreateRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponDownloadRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponSearchRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.request.CouponWithImageCreateRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponHistoryResponse;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponResponse;
 import com.example.springchallenge2week.domain.coupon.service.CouponService;
@@ -14,7 +16,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -35,6 +39,24 @@ public class CouponController {
         CouponResponse coupon = couponService.createCoupon(request);
 
         return new ResponseEntity<>(coupon, HttpStatus.CREATED);
+    }
+
+    // 쿠폰 생성(+이미지)
+    @PostMapping
+    public ResponseEntity<?> createCouponWithImage(
+            @Valid @RequestPart(value = "values") CouponWithImageCreateRequestDto request,
+            @RequestPart(value = "logoImage", required = false) MultipartFile logoImage,
+            @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        log.info("request: {}", request);
+        log.info("principalDetails: {}", principalDetails);
+
+        request.setLogoImage(logoImage);
+//        request.setDetailImages(detailImages);
+//        request.createTag(request);
+        couponService.createCouponWithImage(request);
+
+        return new ResponseEntity<>("create coupon with image!", HttpStatus.CREATED);
     }
 
     // 쿠폰 발급

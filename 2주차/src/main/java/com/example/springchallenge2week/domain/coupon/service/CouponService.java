@@ -2,6 +2,7 @@ package com.example.springchallenge2week.domain.coupon.service;
 
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponCreateRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponSearchRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.request.CouponWithImageCreateRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponHistoryResponse;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponResponse;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,9 @@ public interface CouponService {
 
     // 쿠폰 생성
     CouponResponse createCoupon(CouponCreateRequestDto request);
+
+    // 쿠폰 생성(이미지)
+    void createCouponWithImage(CouponWithImageCreateRequestDto request);
 
     // 쿠폰 발급
     CouponHistoryResponse createCouponHistory(Long userId, String couponCode);
@@ -32,4 +36,5 @@ public interface CouponService {
 
     // 쿠폰 리스트 + Querydsl(페이징, 검색)
     Page<CouponResponse> getCouponsPageWithQueryDsl(CouponSearchRequestDto requestDto);
+
 }

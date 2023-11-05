@@ -2,8 +2,10 @@ package com.example.springchallenge2week.domain.coupon.service;
 
 import com.example.springchallenge2week.common.exception.CustomApiException;
 import com.example.springchallenge2week.common.exception.ResponseCode;
+import com.example.springchallenge2week.common.utils.aws.AwsS3Util;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponCreateRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.request.CouponSearchRequestDto;
+import com.example.springchallenge2week.domain.coupon.dto.request.CouponWithImageCreateRequestDto;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponHistoryResponse;
 import com.example.springchallenge2week.domain.coupon.dto.response.CouponResponse;
 import com.example.springchallenge2week.domain.coupon.entity.*;
@@ -18,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +39,7 @@ public class CouponServiceImpl implements CouponService {
     private final CouponHistoryRepository couponHistoryRepository;
     private final CouponRepository couponRepository;
     private final UserRepository userRepository;
+    private final AwsS3Util awsS3Util;
 
     // 유효날짜 지난 쿠폰히스토리 상태 변경
     @Scheduled(cron = "0 0 0 * * *")
@@ -66,6 +71,25 @@ public class CouponServiceImpl implements CouponService {
         Coupon saveCoupon = couponRepository.save(request.toEntity());
 
         return CouponResponse.toDto(saveCoupon);
+    }
+
+    // 쿠폰 생성(이미지)
+    @Transactional
+    @Override
+    public void createCouponWithImage(CouponWithImageCreateRequestDto request) {
+
+        Coupon coupon = request.toEntity();
+
+        MultipartFile logoImage = request.getLogoImage();
+        String uploadedUrl = null;
+
+        if (!ObjectUtils.isEmpty(logoImage)) {
+            log.info("logoImage is not empty, logoImage: {}", logoImage);
+            uploadedUrl = awsS3Util.uploadFile(logoImage);
+            coupon.changeLogoImage(uploadedUrl);
+        }
+
+        Coupon saveCoupon = couponRepository.save(coupon);
     }
 
     // 쿠폰 발급 (쿠폰 히스토리 생성)

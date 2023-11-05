@@ -41,6 +41,9 @@ public class Coupon extends BaseTimeEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Column(name = "logo_image", length = 255)
+    private String logoImage;
+
     @OneToMany(mappedBy = "coupon")
     private List<CouponHistory> couponHistoryies;
 
@@ -53,5 +56,9 @@ public class Coupon extends BaseTimeEntity {
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public void changeLogoImage(String uploadedUrl) {
+        this.logoImage = uploadedUrl;
     }
 }
